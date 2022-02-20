@@ -53,13 +53,12 @@ Once you have defined a client class you can connect to the client socket and st
 .Connecting a Client WebSocket
 [source,java]
 ----
-ChatClientWebSocket chatClient = webSocketClient
-    .connect(ChatClientWebSocket.class, "/chat/football/fred")
-    .blockFirst();
+Publisher<ChatClientWebSocket> publisher = webSocketClient.connect(ChatClientWebSocket.class, "/chat/football/fred");
+ChatClientWebSocket chatClient = Flowable.fromPublisher(publisher).blockingFirst();
 chatClient.send("Hello World!");
 ----
 
-NOTE: For illustration purposes we use `blockFirst()` to obtain the client. It is however possible to combine `connect` (which returns a reactor:Flux[]) to perform non-blocking interaction via WebSocket.
+NOTE: For illustration purposes we use `Flowable.blockingFirst()` to obtain the client. It is however possible to combine `connect` (which returns `org.reactivestreams.Publisher`) to perform non-blocking interaction via WebSocket.
 
 [TIP]
 .Using the CLI
